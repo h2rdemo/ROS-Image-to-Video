@@ -16,8 +16,8 @@ def overlay_circle(id, (x, y), radius, color=DEFAULT_COLOR, fill=DEFAULT_FILL, t
 	rv.fill = fill
 	rv.thickness = thickness
 	rv.color = color
-	rv.poly[0] = Point(x, y)
-	rv.param[0] = radius
+	rv.poly = [Point(x, y)]
+	rv.param = [radius]
 
 	return rv
 

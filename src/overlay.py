@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 import roslib
 roslib.load_manifest('ros_overlay')
-import sys
 import rospy
+import sys
 import cv2
 from std_msgs.msg import String
 from sensor_msgs.msg import Image
+from ros_overlay.msg import *
 from cv_bridge import CvBridge, CvBridgeError
+import overlay_shapes as shp
 
 data_topic = "image_overlay/data"
 subscribe_topic = "image_overlay/in"
@@ -19,6 +21,8 @@ window_name = "Overlay Preview"
 image_pub = None
 image_sub = None
 bridge = None
+
+shapes = {}
 
 def main(args):
 	global image_pub, image_sub, bridge
@@ -34,7 +38,11 @@ def main(args):
 		cv2.namedWindow(window_name, 1)
 
 	bridge = CvBridge()
+	data_sub = rospy.Subscriber(data_topic,Shape,callback_shape)
 	image_sub = rospy.Subscriber(subscribe_topic,Image,callback_render)
+
+	callback_shape(shp.overlay_circle(0, (100, 200), 50, (255, 0, 128)))
+	callback_shape(shp.overlay_circle(1, (300, 300), 70, (255, 255, 0)))
 
 	try:
 		rospy.spin()
@@ -94,8 +102,15 @@ def callback_render(data):
 		print e
 
 	(rows,cols,channels) = cv_image.shape
-	if cols > 60 and rows > 60 :
-		cv2.circle(cv_image, (50,50), 10, 255)
+
+	for sid, shape in shapes.iteritems():
+		# Switch based on the type of shape:
+		if shape.type == Shape.SHP_NONE:
+			print "Shape " + str(sid) + " is of type SHP_NONE."
+		elif shape.type == Shape.SHP_CIRCLE:
+			cv2.circle(cv_image, (shape.poly[0].x,shape.poly[0].y), shape.param[0], (shape.color[0], shape.color[1], shape.color[2]), -1 if shape.fill else int(shape.thickness))
+		else:
+			print "Shape " + str(sid) + " is of unrecognized type " + str(shape.type) + "."
 
 	if opt_gui:
 		cv2.imshow(window_name, cv_image)
@@ -105,6 +120,16 @@ def callback_render(data):
 		image_pub.publish(bridge.cv2_to_imgmsg(cv_image, "bgr8"))
 	except CvBridgeError, e:
 		print e
+
+def callback_shape(data):
+	if data.delete:
+		shapes.pop(data.id, None)
+		if opt_verbose:
+			print "Removed " + data.id
+	else:
+		shapes[data.id] = data
+		if opt_verbose:
+			print "Added/Updated " + data.id
 
 if __name__ == '__main__':
 		main(sys.argv)

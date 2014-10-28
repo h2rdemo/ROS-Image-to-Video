@@ -5,7 +5,7 @@ Usage
 -----
 
 ```
-rosrun ros_overlay ros_overlay.py [OPTION] [DATA_TOPIC [IMAGE_IN_TOPIC [IMAGE_OUT_TOPIC]]].
+rosrun ros_overlay overlay.py [OPTION] [DATA_TOPIC [IMAGE_IN_TOPIC [IMAGE_OUT_TOPIC]]].
 
 [OPTION]:
 	-v	Verbose. Prints state information.
@@ -24,13 +24,13 @@ rosrun ros_overlay ros_overlay.py [OPTION] [DATA_TOPIC [IMAGE_IN_TOPIC [IMAGE_OU
 Example:
 
 ```
-rosrun ros_overlay ros_overlay.py test /openni/rgb/image_color -d
+rosrun ros_overlay overlay.py test /openni/rgb/image_color -d
 ```
 
 Data
 ----
 
-The data declaration is meant to be as general as possible, and so is not particularly elegant. Import `ros_overlay_shapes.py` for some very necessary helper functions!
+The data declaration is meant to be as general as possible, and so is not particularly elegant. Import `overlay_shapes.py` for some very necessary helper functions!
 
 Right now, we only support circles.
 
