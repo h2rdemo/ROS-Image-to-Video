@@ -41,9 +41,6 @@ def main(args):
 	data_sub = rospy.Subscriber(data_topic,Shape,callback_shape)
 	image_sub = rospy.Subscriber(subscribe_topic,Image,callback_render)
 
-	callback_shape(shp.overlay_circle(0, (100, 200), 50, (255, 0, 128)))
-	callback_shape(shp.overlay_circle(1, (300, 300), 70, (255, 255, 0)))
-
 	try:
 		rospy.spin()
 	except KeyboardInterrupt:
@@ -125,8 +122,10 @@ def callback_shape(data):
 	if data.delete:
 		shapes.pop(data.id, None)
 		if opt_verbose:
-			print "Removed " + data.id
+			print "Removed " + str(data.id)
 	else:
+		# Convert from byte string to list-of-ints
+		data.color = [int(c.encode('hex'), 16) for c in data.color]
 		shapes[data.id] = data
 		if opt_verbose:
 			print "Added/Updated " + data.id

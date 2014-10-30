@@ -34,3 +34,7 @@ The data declaration is meant to be as general as possible, and so is not partic
 
 Right now, we only support circles.
 
+Testing/Sample
+--------------
+
+See `test.py` for a simple example.
