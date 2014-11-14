@@ -1,40 +1,25 @@
-ros_overlay
-===========
+ros_image_to_video
+==================
 
 Usage
 -----
 
 ```
-rosrun ros_overlay overlay.py [OPTION] [DATA_TOPIC [IMAGE_IN_TOPIC [IMAGE_OUT_TOPIC]]].
+rosrun ros_image_to_video i2v.py IMAGE_FILE [IMAGE_OUT_TOPIC [FREQUENCY]]
 
-[OPTION]:
-	-v	Verbose. Prints state information.
-	-d 	Display generated image.
-
-[DATA_TOPIC]:
-	The ROS topic to listen on for geometry information. (Default: image_overlay/data)
-
-[IMAGE_IN_TOPIC]:
-	The image topic to take as input. (Default: image_overlay/in)
+IMAGE_FILE:
+	The image file to publish. Required.
 
 [IMAGE_OUT_TOPIC]:
-	The image topic to publish output to. (Default: image_overlay/out)	
+	The image topic to publish output to. (Default: image_to_video/out)	
+
+[FREQUENCY]:
+	How many times a second to publish the image. (Default: 10)
 ```
 
 Example:
 
 ```
-rosrun ros_overlay overlay.py test /openni/rgb/image_color -d
+rosrun ros_image_to_video i2v.py cit.jpg image_overlay/in 30
 ```
 
-Data
-----
-
-The data declaration is meant to be as general as possible, and so is not particularly elegant. Import `overlay_shapes.py` for some very necessary helper functions!
-
-Right now, we only support circles.
-
-Testing/Sample
---------------
-
-See `test.py` for a simple example.

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(ros_overlay)
+project(ros_image_to_video)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -40,11 +40,9 @@ find_package(catkin REQUIRED COMPONENTS rospy std_msgs message_generation)
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-add_message_files(
-   FILES
-   Point.msg
-   Shape.msg
-)
+#add_message_files(
+#   FILES
+#)
 
 ## Generate services in the 'srv' folder
 # add_service_files(
